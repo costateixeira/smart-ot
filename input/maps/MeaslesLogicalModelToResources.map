@@ -28,7 +28,7 @@ group LmToComposition(source lm : MeaslesLogicalModel, target composition : Meas
 }
 
 group DemographicsToPatient(source demographics:DemographicsLogicalModel , target patient: MeaslesPatient, source pid) {
- pid -> patient.id = pid "setid"3;
+ pid -> patient.id = pid "setid3";
  demographics.name as name -> patient.name = name "setname3";
  demographics.DateOfBirth as dob -> patient.birthDate = dob "setdateofbirth3";
  demographics.Sex as sex -> patient.gender = sex "setsex3";
