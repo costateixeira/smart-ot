@@ -1,4 +1,10 @@
-map "http://worldhealthorganization.github.io/smart-ot/StructureMap/MeaslesQuestionnaireToResources" = "MeaslesQuestionnaireToResources"
+/// status = 'draft'
+/// url = 'http://worldhealthorganization.github.io/smart-ot/StructureMap/MeaslesQuestionnaireToResources'
+/// name = 'MeaslesQuestionnaireToResources'
+/// id = 'MeaslesQuestionnaireToResources'
+/// title = 'Measles Questionnaire To Resources'
+/// description = 'Measles Questionnaire To Resources'
+
 uses "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse" alias QuestionnaireResponse as source
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias MeaslesCIFBundle as target
 
