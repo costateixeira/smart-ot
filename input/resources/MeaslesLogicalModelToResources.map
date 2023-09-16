@@ -1,0 +1,54 @@
+map "http://worldhealthorganization.github.io/smart-ot/StructureMap/MeaslesLogicalModelToResources" = "MeaslesLogicalModelToResources"
+
+uses "http://worldhealthorganization.github.io/smart-ot/StructureDefinition/SOTMeasles" alias MeaslesLogicalModel as source
+uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias MeaslesCIFBundle as target
+
+
+group main(source SOTMeasles : MeaslesLogicalModel, target Bundle : MeaslesCIFBundle) {
+  SOTMeasles ->
+    evaluate(SOTMeasles, $this) as a,
+    uuid() as uuid#2,
+    Bundle.id = uuid#2 "rule_37";
+  SOTMeasles ->
+    evaluate(SOTMeasles, $this) as b,
+    ('document') as constant#1,
+    Bundle.type = constant#1 "rule_38";
+  SOTMeasles ->
+    Bundle.entry as c,
+    evaluate(SOTMeasles, $this) as d then LmToComposition(SOTMeasles, c) "rule_39";
+  SOTMeasles ->
+    Bundle.entry as e,
+    evaluate(SOTMeasles, Demographics) as f then DemographicsToPatient(SOTMeasles, e) "rule_40";
+}
+
+group LmToComposition(source SOTMeasles : MeaslesLogicalModel, target Bundle_entry#3 : MeaslesCIFComposition) {
+  SOTMeasles ->
+    Bundle_entry#3.link as g,
+    Bundle_entry#3.resource = create('Composition') as h,
+    Bundle_entry#3.request as i,
+    evaluate(SOTMeasles, $this) as j,
+    ('PUT') as constant#12,
+    i.method = constant#12,
+    uuid() as uuid#3,
+    h.id = uuid#3,
+    append('Composition/', uuid#3) as append#5,
+    g.url = append#5,
+    append('urn:uuid:', uuid#3) as append#4,
+    Bundle_entry#3.fullUrl = append#4 "rule_41";
+}
+
+group DemographicsToPatient(source SOTMeaslesDemographic : SOTMeaslesDemographic, target Bundle_entry#16 : MeaslesCIFComposition) {
+  SOTMeaslesDemographic ->
+    Bundle_entry#16.resource = create('Patient') as k,
+    k.identifier = create('Identifier') as l,
+    k.name = create('HumanName') as m,
+    evaluate(SOTMeaslesDemographic, UniqueId) as n,
+    evaluate(SOTMeaslesDemographic, Name) as o,
+    evaluate(SOTMeaslesDemographic, $this) as p,
+    uuid() as uuid#27,
+    append('urn:uuid:', uuid#27) as append#28,
+    m.$this = o,
+    l.value = n,
+    k.id = uuid#27,
+    Bundle_entry#16.fullUrl = append#28 "rule_42";
+}

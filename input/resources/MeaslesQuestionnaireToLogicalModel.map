@@ -33,7 +33,7 @@ group mapReportingSource(source qrReportingSource, target lmReportingSource : Re
 
 group mapReportingInstitution(source qrReportingInstitution, target lmReportingSource : ReportingSourceLogicalModel) {
   qrReportingInstitution.item as reportingFacility where linkId.value in ('reportingFacility') -> lmReportingSource.HealthServiceName = (reportingFacility.answer.valueString) "setHealthFacilityname";
-  qrReportingInstitution.item as telephone where linkId.value in ('telephone') -> create('ContactPoint') as lmTelephone, lmTelephone.value = (telephone.answer.valueString), lmReportingSource.HealthServiceTelephone = lmTelephone "setTelephone";
+  qrReportingInstitution.item first where linkId.value = 'telephone' as telephone  -> create('ContactPoint') as lmTelephone, lmTelephone.value = (telephone.answer.valueString), lmReportingSource.HealthServiceTelephone = lmTelephone "setTelephone";
   qrReportingInstitution -> create('Address') as lmAddress then {
   qrReportingInstitution.item as country where linkId.value in ('country') -> lmAddress.country= (country.answer.valueString) "setCountry"; 
   qrReportingInstitution.item as municipality where linkId.value in ('municipality') -> lmAddress.city = (municipality.answer.valueString) "setCity";
