@@ -20,7 +20,7 @@ Usage: #definition
 * status = #draft
 * contained[+] = InitDiag
 * contained[+] = YesNoUnknown
-
+* contained[+] = RashType
 //Header
 * insert Question(investigationForm,Investigation Form for Measles/Rubella,group,false)
 * item[=]
@@ -81,7 +81,7 @@ Usage: #definition
     * item[=].answerValueSet = Canonical(NoOfDoses)
     * insert Question(lastDoseDate, Date of last dose, date, false)
     * insert Question(sourceOfInformation, Source of vaccination Information †, choice, false)
-    * item[=].answerValueSet = Canonical(SourceOfInformation)
+    * item[=].answerValueSet = Canonical(VaccineInfoSource)
 //Clinical
   * insert Question(clinical, Section IV: Clinical Data; Follow-up & Treatment, group, false)
   * item[=]
@@ -128,6 +128,7 @@ Usage: #definition
           * system = Canonical(YesNoUnknownCs)
           * code =  #Yes  
     * insert Question(rashType, Type of rash, choice, false)
+    * item[=].answerValueSet = Canonical(RashType)
     * item[=]
       * enableWhen
         * question = "rash"
